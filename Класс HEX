@@ -1,0 +1,59 @@
+using System.Text;
+ 
+// Чтобы не усложнять код, не проверяю входные параметры на корректность.
+public class Hex
+{
+    private const string VALUES = "0123456789ABCDEF"; // Массив для перевода числа в нужное написание и наоборот.
+ 
+    private int count; // Количество значущих цифр.
+    private char[] array;
+ 
+    private Hex(char[] array, int count)
+    {
+        this.array = array;
+        this.count = count;
+    }
+    public Hex(string number, int max)
+    {
+        // Свято верю, что входные параметры правильные.
+        array = new char[max];
+        count = number.Length;
+        for (int i = 0; i < count; i++)
+            array[i] = number[count - i - 1]; // Младшая цифра в младшем разряде.
+    }
+ 
+    public override string ToString()
+    {
+        StringBuilder builder = new StringBuilder();
+        for (int i = count - 1; i >= 0; i--)
+            builder.Append(array[i]);
+        return builder.ToString();
+    }
+ 
+    public static Hex operator +(Hex left, Hex right)
+    {
+        // Традиционный алгоритм сложения двух чисел в длинной арифметике.
+        if (left.count < right.count)
+            return right + left;
+        int count = left.count;
+        char[] array = new char[left.array.Length];
+        int carry = 0, value;
+        for (int i = 0; i < left.count; i++)
+        {
+            value = VALUES.IndexOf(left.array[i]) + (i < right.count ? VALUES.IndexOf(right.array[i]) : 0) + carry;
+            carry = 0;
+            if (value > 15)
+            {
+                carry = value / 16;
+                value %= 16;
+            }
+            array[i] = VALUES[value];
+        }
+        if (carry > 0)
+        {
+            count++;
+            array[left.count] = VALUES[carry];
+        }
+        return new Hex(array, count);
+    }
+}
