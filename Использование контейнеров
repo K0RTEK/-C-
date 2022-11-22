@@ -1,0 +1,27 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+ 
+int main()
+{
+    srand((int)time(0));
+    int n, a, b, count=0;
+    cout << "n="; cin >> n;
+    cout << "a="; cin >> a;
+    cout << "b="; cin >> b;
+ 
+    int *arr = new int[n];
+ 
+    for (int i = 0; i < n; i++)
+    {
+        arr[i]=rand()%101 - 50; 
+        if(arr[i] < a || arr[i] > b) count++; 
+        cout << arr[i] << " ";
+    }
+    cout << "\ncount=" << count << "\n";
+    
+    delete[]arr;
+system("pause");
+return 0;
+}
