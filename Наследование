@@ -1,0 +1,103 @@
+#include<iostream>
+#include<iomanip>
+using namespace std;
+
+class Pair
+{
+protected:
+    double a, b;
+public:
+    void Set()
+    {
+        double valueA, valueB;
+        cout << "Введите  другие числа: " << " ";
+        cin >> valueA >> valueB;
+        a = valueA;
+        b = valueB;
+    }
+    void Read()
+    {
+        cout << "Введите числа : " << endl;
+        cin >> a >> b;
+    }
+    int Proizv()
+    {
+        return(a * b);
+    }
+    void Display()
+    {
+        cout << "a= " << a << "   b= " << b << endl;
+        cout << "Произведение: " << Proizv() << endl;
+    }
+};
+class RightAngled : public Pair
+{
+protected:
+    double x, y;
+public:
+
+    void Read()
+    {
+        cout << "Введите катеты : " << endl;
+        cin >> x >> y;
+    }
+    void Set()
+    {
+        double valueA, valueB;
+        cout << "Введите другие катеты: " << " ";
+        cin >> valueA >> valueB;
+        x = valueA;
+        y = valueB;
+    }
+    void Plo()
+    {
+        double S;
+        S = (x + y) / 2;
+        cout << "Площадь равна: " << S << endl;
+    }
+    void Gip()
+    {
+        double C, c;
+        C = ((x * x) + (y * y));
+        c = sqrt(C);
+        cout << "Гипотенуза равна: " << c << endl;
+    }
+    void Show()
+    {
+        cout << "1 катет= " << x << " ; " << "2 катет= " << y << endl;
+        cout << endl;
+        Plo();
+        Gip();
+    }
+
+};
+int main()
+{
+    setlocale(LC_ALL, "ru");
+    int k;
+    Pair t, v;
+    RightAngled n, d;
+    t.Read(); t.Display();
+    cout << "Хотите продолжить? Если да-нажмите 1. Для выхода нажмите - 0" << endl;
+    cin >> k;
+    while (k != 0)
+
+    {
+        v.Set(); v.Display();
+        cout << "Хотите продолжить? Если да-нажмите 1. Нет нажмите - 0" << endl;
+        cin >> k;
+    }
+
+    d.Read();  d.Show();
+    cout << "Хотите продолжить? Если да-нажмите 1. Для выхода нажмите - 0" << endl;
+    cin >> k;
+    while (k != 0)
+    {
+        n.Set(); n.Show();
+        cout << "Хотите продолжить? Если да-нажмите 1. Для выхода нажмите - 0" << endl;
+        cin >> k;
+    }
+
+    system("pause");
+    return 0;
+}
