@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+class Time {
+public:
+	Time() : first(0), second(0) {}
+	Time(const int h, const int m) : first(h), second(m) {}
+	int minutes()const {
+		return first * 60 + second;
+	}
+private:
+	int first;
+	int second;
+};
+int main() {
+	Time time(3, 48);
+	cout << time.minutes() << '\n';
+	system("pause > nul");
+}
