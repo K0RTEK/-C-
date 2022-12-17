@@ -3,8 +3,8 @@ using namespace std;
 class Money
 {
 public:
-	void convert();
-	void wtite();
+	virtual void convert()=0;
+	virtual void wtite()=0;
 private:
 
 };
