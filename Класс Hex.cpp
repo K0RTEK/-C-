@@ -3,9 +3,9 @@ using namespace std;
 class Hex
 {
 public:
-	virtual void insert();
+	virtual void insert()=0;
 
-	virtual void write();
+	virtual void write()=0;
 private:
 	unsigned char chislo[100];
 
