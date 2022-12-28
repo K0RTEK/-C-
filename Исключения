@@ -1,18 +1,19 @@
+//((a,b)/(c,d)=(ac+bd,bc-ad)/(cc+dd))
 #include <iostream>
 using namespace std;
-class MyExcept1 {};
+class Complex1 {};
 
-class MyExcept2 {
+class Complex2 {
     string msg;
 public:
-    MyExcept2(const string& s) : msg(s) {}
+    Complex2(const string& s) : msg(s) {}
     const char* message() const { return msg.c_str(); }
 };
 
-class MyExcept3 : public invalid_argument {
+class Complex3 : public invalid_argument {
     double num;
 public:
-    MyExcept3(const string msg, double n) : invalid_argument(msg), num(n) {}
+    Complex3(const string msg, double n) : invalid_argument(msg), num(n) {}
     double arg() const { return num; }
 };
 
@@ -43,34 +44,34 @@ double root3(double a, double b, double c, double d) throw(invalid_argument) {
     return first/third,second/third;
 }
 
-double root4_1(double a, double b, double c, double d) throw(MyExcept1) {
+double root4_1(double a, double b, double c, double d) throw(Complex1) {
     int first, second, third;
     first = (a*c) + (b * d);
 	second = (b*c) - (a * d);
 	third = (c*c) + (d * d);
 	
     if (third == 0.0)
-        throw MyExcept1();
+        throw Complex1();
     return first/third,second/third;
 }
 
-double root4_2(double a, double b, double c, double d) throw(MyExcept2) {
+double root4_2(double a, double b, double c, double d) throw(Complex2) {
     int first, second, third;
     first = (a*c) + (b * d);
 	second = (b*c) - (a * d);
 	third = (c*c) + (d * d);
     if (third == 0.0)
-        throw MyExcept2("Деление на 0");
+        throw Complex2("Деление на 0");
     return first/third,second/third;
 }
 
-double root4_3(double a, double b, double c, double d) throw(MyExcept3) {
+double root4_3(double a, double b, double c, double d) throw(Complex3) {
     int first, second, third;
     first = (a*c) + (b * d);
 	second = (b*c) - (a * d);
 	third = (c*c) + (d * d);
     if (third == 0.0)
-        throw MyExcept3("third = 0", third);
+        throw Complex3("third = 0", third);
     return first/third,second/third;
 }
 
@@ -87,7 +88,7 @@ void launcher(double (*func)(double, double, double, double)) {
     cout << "Решение уравнения: " << func(a, b, c, d) << endl;
 }
 
-class Complex
+/*class Complex
 {
 public:
 	Complex(int celaya, int mnimay);
@@ -120,16 +121,8 @@ Complex::Complex(int celaya,int mnimay)
 {
 	this->celaya = celaya;
 	this->mnimaya = mnimay;
-}
+}*/
 int main() {
-	/*int celay, mnimay;
-	cin >> celay>>mnimay;
-	Complex a(celay, mnimay);
-	celay = 0;
-	mnimay = 0;
-	cin >> celay >> mnimay;
-	Complex b(celay, mnimay);
-	a.delenie(b);*/
     setlocale(LC_ALL, "rus");
     cout << "Функция решения уравнения ((a,b)/(c,d)=(ac+bd,bc-ad)/(cc+dd))\n";
 
@@ -157,21 +150,21 @@ int main() {
     try {
         launcher(root4_1);
     }
-    catch (MyExcept1) {
-        cout << "Произошло исключение MyExcept1 в функции root4_1" << endl;
+    catch (Complex1) {
+        cout << "Произошло исключение Complex1 в функции root4_1" << endl;
     }
 
     try {
         launcher(root4_2);
     }
-    catch (MyExcept2& e) {
+    catch (Complex2& e) {
         cout << e.message() << endl;
     }
 
     try {
         launcher(root4_3);
     }
-    catch (MyExcept3& e) {
+    catch (Complex3& e) {
         cout << e.what() << " " << e.arg() << endl;
     }
 }
