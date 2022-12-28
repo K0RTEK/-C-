@@ -1,6 +1,92 @@
-//((a,b)/(c,d)=(ac+bd,bc-ad)/(cc+dd))
 #include <iostream>
 using namespace std;
+class MyExcept1 {};
+
+class MyExcept2 {
+    string msg;
+public:
+    MyExcept2(const string& s) : msg(s) {}
+    const char* message() const { return msg.c_str(); }
+};
+
+class MyExcept3 : public invalid_argument {
+    double num;
+public:
+    MyExcept3(const string msg, double n) : invalid_argument(msg), num(n) {}
+    double arg() const { return num; }
+};
+
+double root1(double a, double b, double c, double d) {
+    int first, second, third;
+    first = (a*c) + (b * d);
+	second = (b*c) - (a * d);
+	third = (c*c) + (d * d);
+    return first/third,second/third;
+}
+
+double root2(double a, double b, double c, double d) throw() {
+    int first, second, third;
+    first = (a*c) + (b * d);
+	second = (b*c) - (a * d);
+	third = (c*c) + (d * d);
+    return first/third,second/third;
+}
+
+double root3(double a, double b, double c, double d) throw(invalid_argument) {
+    int first, second, third;
+    first = (a*c) + (b * d);
+	second = (b*c) - (a * d);
+	third = (c*c) + (d * d);
+    
+    if (third == 0.0)
+        throw invalid_argument("Деление на 0");
+    return first/third,second/third;
+}
+
+double root4_1(double a, double b, double c, double d) throw(MyExcept1) {
+    int first, second, third;
+    first = (a*c) + (b * d);
+	second = (b*c) - (a * d);
+	third = (c*c) + (d * d);
+	
+    if (third == 0.0)
+        throw MyExcept1();
+    return first/third,second/third;
+}
+
+double root4_2(double a, double b, double c, double d) throw(MyExcept2) {
+    int first, second, third;
+    first = (a*c) + (b * d);
+	second = (b*c) - (a * d);
+	third = (c*c) + (d * d);
+    if (third == 0.0)
+        throw MyExcept2("Деление на 0");
+    return first/third,second/third;
+}
+
+double root4_3(double a, double b, double c, double d) throw(MyExcept3) {
+    int first, second, third;
+    first = (a*c) + (b * d);
+	second = (b*c) - (a * d);
+	third = (c*c) + (d * d);
+    if (third == 0.0)
+        throw MyExcept3("third = 0", third);
+    return first/third,second/third;
+}
+
+void launcher(double (*func)(double, double, double, double)) {
+    double a, b, c, d;
+    cout << "Введите a=";
+    cin >> a;
+    cout << "Введите b=";
+    cin >> b;
+    cout << "Введите c=";
+    cin >> c;
+    cout << "Введите d=";
+    cin >> d;
+    cout << "Решение уравнения: " << func(a, b, c, d) << endl;
+}
+
 class Complex
 {
 public:
@@ -36,13 +122,56 @@ Complex::Complex(int celaya,int mnimay)
 	this->mnimaya = mnimay;
 }
 int main() {
-	int celay, mnimay;
+	/*int celay, mnimay;
 	cin >> celay>>mnimay;
 	Complex a(celay, mnimay);
 	celay = 0;
 	mnimay = 0;
 	cin >> celay >> mnimay;
 	Complex b(celay, mnimay);
-	a.delenie(b);
+	a.delenie(b);*/
+    setlocale(LC_ALL, "rus");
+    cout << "Функция решения уравнения ((a,b)/(c,d)=(ac+bd,bc-ad)/(cc+dd))\n";
 
+    try {
+        launcher(root1);
+    }
+    catch (...) {
+        cout << "Произошло исключение в функции root1" << endl;
+    }
+
+    try {
+        launcher(root2);
+    }
+    catch (...) {
+        cout << "Произошло исключение в функции root2" << endl;
+    }
+
+    try {
+        launcher(root3);
+    }
+    catch (invalid_argument& e) {
+        cout << e.what() << endl;
+    }
+
+    try {
+        launcher(root4_1);
+    }
+    catch (MyExcept1) {
+        cout << "Произошло исключение MyExcept1 в функции root4_1" << endl;
+    }
+
+    try {
+        launcher(root4_2);
+    }
+    catch (MyExcept2& e) {
+        cout << e.message() << endl;
+    }
+
+    try {
+        launcher(root4_3);
+    }
+    catch (MyExcept3& e) {
+        cout << e.what() << " " << e.arg() << endl;
+    }
 }
